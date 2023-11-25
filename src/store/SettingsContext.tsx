@@ -50,19 +50,16 @@ type Action = NumAction | BoolAction;
 
 // TODO: check type guards
 function isNumAction(action: Action): action is NumAction {
-  return Object.values(NumActionType).includes(action.type as NumActionType);
+  return Object.values(NumActionType).includes(action.type as NumActionType) && typeof action.payload === 'number';
 }
 function isBoolAction(action: Action): action is BoolAction {
-  return Object.values(BoolActionType).includes(action.type as BoolActionType);
+  return Object.values(BoolActionType).includes(action.type as BoolActionType) && typeof action.payload === 'boolean';
 }
 
 function settingsReducer(state: State, action: Action) {
   if (isNumAction(action)) {
-    if (typeof action.payload !== 'number') {
-      throw new TypeError(`Invalid action: ${JSON.stringify(action)}. Expected number for ${action} setting change.`);
-    }
     if (action.payload <= 0) {
-      throw new RangeError(`Expected positive number for ${action} setting change, got ${action.payload}`);
+      throw new RangeError(`Expected positive number for ${action} setting change, got ${action.payload}.`);
     }
     switch (action.type) {
       case NumActionType.SET_POMODORO_DURATION:
@@ -76,12 +73,9 @@ function settingsReducer(state: State, action: Action) {
       case NumActionType.SET_AUDIO_VOLUME:
         return { ...state, audioVolume: action.payload };
       default:
-        throw new Error(`Invalid action type: ${action.type}`);
+        throw new Error(`Invalid action type: ${JSON.stringify(action)}.`);
     }
   } else if (isBoolAction(action)) {
-    if (typeof action.payload !== 'boolean') {
-      throw new TypeError(`Invalid action: ${JSON.stringify(action)}. Expected boolean for ${action} setting change.`);
-    }
     switch (action.type) {
       case BoolActionType.SET_IS_STATISTICS:
         return { ...state, isStatistics: action.payload };
@@ -104,7 +98,10 @@ export function SettingsProvider({
 }) {
   const userPreferences = localStorage.getItem(USER_PREFERENCES_KEY);
   const savedSettings = userPreferences ? JSON.parse(userPreferences) as State : null;
-  const [settings, dispatchSettings] = useReducer(settingsReducer, savedSettings || DEFAULT_SETTINGS);
+  const [settings, dispatchSettings] = useReducer(
+    settingsReducer,
+    savedSettings || DEFAULT_SETTINGS,
+  );
 
   // TODO: Validate localStorage JSON
 
