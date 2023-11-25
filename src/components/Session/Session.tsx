@@ -6,7 +6,7 @@ import { Box, Heading } from '@chakra-ui/react';
 import Interval, { timestampToOutput } from './Interval';
 import StateDisplay from './StateDisplay';
 import SessionButtons from './SessionButtons';
-import settingsContext from '../../store/settingsContext';
+import settingsContext from '../../store/SettingsContext.tsx';
 import alarmSound from '../../assets/alarm.mp3';
 import tomatoLogo from '../../assets/tomato.png';
 

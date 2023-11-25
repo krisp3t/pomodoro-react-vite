@@ -4,7 +4,7 @@ import { VscDebugPause, VscDebugRestart, VscDebugStart } from 'react-icons/vsc';
 import { RiSkipForwardLine } from 'react-icons/ri';
 
 import { SESSION_MODES } from './Session';
-import settingsContext from '../../store/settingsContext';
+import settingsContext from '../../store/SettingsContext.tsx';
 
 export default function SessionButtons(props) {
   const settingsCtx = useContext(settingsContext);

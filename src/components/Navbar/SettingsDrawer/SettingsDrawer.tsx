@@ -15,7 +15,7 @@ import {
 import SettingsNumberInput from './SettingsNumberInput';
 import SettingsSlider from './SettingsSlider';
 import SettingsSwitch from './SettingsSwitch';
-import SettingsContext from '../../../store/settingsContext';
+import SettingsContext from '../../../store/SettingsContext.tsx';
 
 export default function SettingsDrawer(props) {
   const settingsCtx = useContext(SettingsContext);
