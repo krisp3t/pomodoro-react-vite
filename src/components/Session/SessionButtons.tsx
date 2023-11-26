@@ -4,10 +4,10 @@ import { VscDebugPause, VscDebugRestart, VscDebugStart } from 'react-icons/vsc';
 import { RiSkipForwardLine } from 'react-icons/ri';
 
 import { SESSION_MODES } from './Session';
-import settingsContext from '../../store/SettingsContext.tsx';
+import { SettingsContext } from '../../store/SettingsContext';
 
 export default function SessionButtons(props) {
-  const settingsCtx = useContext(settingsContext);
+  const settingsCtx = useContext(SettingsContext);
 
   return (
     <ButtonGroup spacing="6">

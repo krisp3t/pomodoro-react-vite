@@ -6,7 +6,7 @@ import { Box, Heading } from '@chakra-ui/react';
 import Interval, { timestampToOutput } from './Session.utils.ts';
 import StateDisplay from './StateDisplay';
 import SessionButtons from './SessionButtons';
-import settingsContext from '../../store/SettingsContext.tsx';
+import { SettingsContext } from '../../store/SettingsContext';
 import alarmSound from '../../assets/alarm.mp3';
 import tomatoLogo from '../../assets/tomato.png';
 
@@ -53,7 +53,7 @@ export default function Session(props) {
   const [timestamp, setTimestamp] = useState(0);
   const [sessionMode, dispatchMode] = useReducer(reducer, SESSION_MODES.initial);
   const intervalRef = useRef();
-  const settingsCtx = useContext(settingsContext);
+  const settingsCtx = useContext(SettingsContext);
   const numBreaks = useRef(0);
 
   let statusDisplay;

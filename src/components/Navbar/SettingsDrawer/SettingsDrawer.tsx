@@ -60,7 +60,9 @@ export default function SettingsDrawer({ isOpen, onClose } : {
                 value={settingsCandidate.pomodoroDuration}
                 min={5}
                 max={120}
-                onChange={(value: number) => onChangeCandidate({ pomodoroDuration: +val * 60000 })}
+                onChange={(_valS: string, valN: number) => onChangeCandidate(
+                  { pomodoroDuration: valN * 60000 },
+                )}
               />
             </FormControl>
             <FormControl>
@@ -69,7 +71,9 @@ export default function SettingsDrawer({ isOpen, onClose } : {
                 value={settingsCandidate.shortBreakDuration}
                 min={1}
                 max={15}
-                onChange={(val: number) => onChangeCandidate({ shortBreakDuration: +val * 60000 })}
+                onChange={(_valS: string, valN: number) => onChangeCandidate(
+                  { shortBreakDuration: valN * 60000 },
+                )}
               />
             </FormControl>
             <FormControl>
@@ -78,7 +82,9 @@ export default function SettingsDrawer({ isOpen, onClose } : {
                 value={settingsCandidate.longBreakDuration}
                 min={1}
                 max={60}
-                onChange={(val: number) => onChangeCandidate({ longBreakDuration: +val * 60000 })}
+                onChange={(_valS: string, valN: number) => onChangeCandidate(
+                  { longBreakDuration: valN * 60000 },
+                )}
               />
             </FormControl>
             <FormControl>
@@ -87,7 +93,9 @@ export default function SettingsDrawer({ isOpen, onClose } : {
                 value={settingsCandidate.ignoreShorter}
                 min={1}
                 max={10}
-                onChange={(val : number) => onChangeCandidate({ ignoreShorter: +val * 60000 })}
+                onChange={(_valS: string, valN: number) => onChangeCandidate(
+                  { ignoreShorter: valN * 60000 },
+                )}
               />
             </FormControl>
             <FormControl>
