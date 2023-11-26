@@ -3,6 +3,12 @@ export enum SessionType {
   SHORT_BREAK = 'SHORT_BREAK',
   LONG_BREAK = 'LONG_BREAK',
   PAUSED = 'PAUSED',
+  CLEAR = 'CLEAR',
 }
 
-export default SessionType;
+export type Task = {
+  id: string;
+  name: string;
+  pomodoroCount: number;
+  isComplete: boolean;
+};

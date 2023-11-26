@@ -7,7 +7,7 @@ import { BsHourglassSplit } from 'react-icons/bs';
 
 import { timestampToOutput, formatHours, formatMinutes } from '../Session/Interval';
 
-export default function LogItem(props) {
+export default function Task(props) {
   const originalStart = new Date(props.action.originalStart);
   const end = new Date(props.action.end);
   return (

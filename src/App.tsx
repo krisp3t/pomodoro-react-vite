@@ -6,8 +6,41 @@ import { Container, Divider, VStack } from '@chakra-ui/react';
 import Navbar from './components/Navbar/Navbar';
 import Session from './components/Session/Session';
 import Stats from './components/Stats/Stats';
+import Log from './components/Log/Log';
+
+// Context imports
 import { SettingsContext } from './store/SettingsContext';
-import SessionType from './components/Session/SessionType.ts';
+import { SessionType, Task } from './types/types';
+
+interface CompletedTasks {
+  work: Task[];
+  breaks: Task[];
+  pauses: Task[];
+}
+interface Action {
+  type: SessionType;
+  payload: Task | null;
+}
+function reducer(state: CompletedTasks, action: Action) {
+  const { type, payload } = action;
+  if (!payload) {
+    if (type === SessionType.CLEAR) {
+      return { work: [], breaks: [], pauses: [] };
+    }
+    return state;
+  }
+  switch (type) {
+    case SessionType.WORKING:
+      return { ...state, work: [...state.work, payload] };
+    case SessionType.LONG_BREAK:
+    case SessionType.SHORT_BREAK:
+      return { ...state, breaks: [...state.breaks, payload] };
+    case SessionType.PAUSED:
+      return { ...state, pauses: [...state.pauses, payload] };
+    default:
+      return state;
+  }
+}
 
 export default function App() {
   const settingsCtx = useContext(SettingsContext);
@@ -17,34 +50,26 @@ export default function App() {
     pauses: [],
   });
 
-  interface CompletedTasks {
-    work: SessionType[];
-    breaks: SessionType[];
-    pauses: SessionType[];
-  }
-  interface Action {
-    type: SessionType;
-    payload: SessionType;
-  }
-  function reducer(state: SessionType, action) {
-
-  }
-
   return (
     <>
       <Navbar />
       <Container maxW="container.lg" centerContent p={6}>
         <VStack w="100%">
-          <Session addItem={dispatchCompleted} />
+          <Session addItem={dispatchCompletedTasks} />
           <Divider borderColor="gray.200" />
           {settingsCtx.isStatistics && (
           <>
-            <Stats actions={completed} />
+            <Stats actions={completedTasks} />
             <Divider borderColor="gray.200" />
           </>
           )}
           {settingsCtx.isLog
-              && <Log items={completed} clear={() => dispatchCompleted({ status: 'CLEAR' })} />}
+              && (
+              <Log
+                items={completedTasks}
+                clear={() => dispatchCompletedTasks({ type: SessionType.CLEAR, payload: null })}
+              />
+              )}
         </VStack>
       </Container>
     </>

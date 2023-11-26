@@ -3,11 +3,11 @@ import {
   Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Icon,
 } from '@chakra-ui/react';
 
-import LogItem from './LogItem';
+import Task from './Task.tsx';
 
 export default function LogMode(props) {
   const content = props.items.map((item) => (
-    <LogItem
+    <Task
       key={item.originalStart}
       action={item}
       colorScheme={props.colorScheme}
