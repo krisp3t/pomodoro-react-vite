@@ -1,13 +1,16 @@
-import React from 'react';
 import { Switch } from '@chakra-ui/react';
+import { ChangeEvent } from 'react';
 
-export default function SettingsSwitch(props) {
+export default function SettingsSwitch(
+  { id, value, onChange } :
+  { id: string, value: boolean, onChange: (e: ChangeEvent<HTMLInputElement>) => void },
+) {
   return (
     <Switch
-      id={props.id}
-      defaultChecked={props.value}
-      value={props.value}
-      onChange={props.onChange}
+      id={id}
+      defaultChecked={value}
+      isChecked={value}
+      onChange={onChange}
     />
   );
 }

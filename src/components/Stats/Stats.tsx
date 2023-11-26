@@ -1,20 +1,20 @@
-import React from 'react';
 import { Box } from '@chakra-ui/layout';
-
 import { useColorModeValue } from '@chakra-ui/react';
-import StatsItem from './StatsItem';
 
-export default function Stats(props) {
-  const workingLength = props.actions.work.reduce(
-    (prev, currentValue) => prev + currentValue.sessionLength,
+import StatsItem from './StatsItem';
+import { CompletedTasks } from '../../types/types';
+
+export default function Stats({ tasks } : { tasks: CompletedTasks }) {
+  const workingLength = tasks.work.reduce(
+    (prev, currentValue) => prev + currentValue.taskLength,
     0,
   );
-  const restingLength = props.actions.breaks.reduce(
-    (prev, currentValue) => prev + currentValue.sessionLength,
+  const restingLength = tasks.breaks.reduce(
+    (prev, currentValue) => prev + currentValue.taskLength,
     0,
   );
-  const pausedLength = props.actions.pauses.reduce(
-    (prev, currentValue) => prev + currentValue.sessionLength,
+  const pausedLength = tasks.pauses.reduce(
+    (prev, currentValue) => prev + currentValue.taskLength,
     0,
   );
 

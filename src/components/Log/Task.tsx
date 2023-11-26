@@ -5,7 +5,7 @@ import {
 import { IoMdClock } from 'react-icons/io';
 import { BsHourglassSplit } from 'react-icons/bs';
 
-import { timestampToOutput, formatHours, formatMinutes } from '../Session/Interval';
+import { timestampToOutput, formatHours, formatMinutes } from '../Session/Session.utils.ts';
 
 export default function Task(props) {
   const originalStart = new Date(props.action.originalStart);

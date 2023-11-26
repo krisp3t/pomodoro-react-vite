@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   NumberInput,
   NumberInputField,
@@ -7,17 +6,24 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react';
 
-export default function SettingsNumberInput(props) {
+export default function SettingsNumberInput({
+  min, max, value, onChange,
+} : {
+  min: number,
+  max: number,
+  value: number,
+  onChange: (valueAsString: string, valueAsNumber: number) => void,
+}) {
   return (
     <NumberInput
       defaultValue={
-        props.value / 60000
+        value / 60000
       }
-      min={props.min}
-      max={props.max}
+      min={min}
+      max={max}
       step={1}
-      value={props.value / 60000}
-      onChange={props.onChange}
+      value={value / 60000}
+      onChange={onChange}
     >
       <NumberInputField />
       <NumberInputStepper>

@@ -31,7 +31,7 @@ export default function Navbar() {
         <SettingsButton onClick={onOpen} />
       </Box>
 
-      <SettingsDrawer isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <SettingsDrawer isOpen={isOpen} onClose={onClose} />
     </Flex>
   );
 }

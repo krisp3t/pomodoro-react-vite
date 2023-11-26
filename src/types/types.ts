@@ -11,4 +11,22 @@ export type Task = {
   name: string;
   pomodoroCount: number;
   isComplete: boolean;
+  taskLength: number;
 };
+
+export interface SettingsState {
+  pomodoroDuration: number;
+  shortBreakDuration: number;
+  longBreakDuration: number;
+  ignoreShorter: number;
+  isStatistics: boolean;
+  isLog: boolean;
+  isNotifications: boolean;
+  audioVolume: number;
+}
+
+export interface CompletedTasks {
+  work: Task[];
+  breaks: Task[];
+  pauses: Task[];
+}

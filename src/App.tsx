@@ -10,13 +10,8 @@ import Log from './components/Log/Log';
 
 // Context imports
 import { SettingsContext } from './store/SettingsContext';
-import { SessionType, Task } from './types/types';
+import { CompletedTasks, SessionType, Task } from './types/types';
 
-interface CompletedTasks {
-  work: Task[];
-  breaks: Task[];
-  pauses: Task[];
-}
 interface Action {
   type: SessionType;
   payload: Task | null;

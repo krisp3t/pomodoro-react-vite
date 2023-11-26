@@ -1,4 +1,3 @@
-import React from 'react';
 import { GiTomato } from 'react-icons/gi';
 import {
   Box, Flex, Heading, Icon,

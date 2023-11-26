@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
 
-import Interval, { timestampToOutput } from './Interval';
+import Interval, { timestampToOutput } from './Session.utils.ts';
 import StateDisplay from './StateDisplay';
 import SessionButtons from './SessionButtons';
 import settingsContext from '../../store/SettingsContext.tsx';
