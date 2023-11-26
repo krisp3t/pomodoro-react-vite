@@ -50,7 +50,7 @@ export default function App() {
       <Navbar />
       <Container maxW="container.lg" centerContent p={6}>
         <VStack w="100%">
-          {/* <Session addItem={dispatchCompletedTasks} /> */}
+          <Session addItem={dispatchCompletedTasks} />
           <Divider borderColor="gray.200" />
           {settingsCtx.isStatistics && (
           <>

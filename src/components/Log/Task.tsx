@@ -1,15 +1,14 @@
-import React from 'react';
 import {
   Box, Text, Badge, Icon,
 } from '@chakra-ui/react';
 import { IoMdClock } from 'react-icons/io';
 import { BsHourglassSplit } from 'react-icons/bs';
+import { timestampToOutput, formatHours, formatMinutes } from '../Session/Session.utils';
+import type { Task as TaskType } from '../../types/types';
 
-import { timestampToOutput, formatHours, formatMinutes } from '../Session/Session.utils.ts';
-
-export default function Task(props) {
-  const originalStart = new Date(props.action.originalStart);
-  const end = new Date(props.action.end);
+export default function Task({ colorScheme, task }: { colorScheme: string, task: TaskType }) {
+  const originalStart = new Date(task.originalStart);
+  const end = new Date(task.end);
   return (
     <Box display="flex" alignItems="center" mb={2} justifyContent="space-between">
       <Badge
@@ -18,7 +17,7 @@ export default function Task(props) {
         textTransform="none"
         borderWidth="1px"
         borderRadius="lg"
-        colorScheme={props.colorScheme}
+        colorScheme={colorScheme}
       >
         <Icon as={IoMdClock} display="inline" mr={1} />
         <Text>
@@ -37,10 +36,10 @@ export default function Task(props) {
         alignItems="center"
         borderWidth="1px"
         borderRadius="lg"
-        colorScheme={props.colorScheme}
+        colorScheme={colorScheme}
       >
         <Icon as={BsHourglassSplit} display="inline" mr={1} />
-        {timestampToOutput(props.action.sessionLength)}
+        {timestampToOutput(task.sessionLength)}
       </Badge>
     </Box>
   );

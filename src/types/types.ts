@@ -8,10 +8,9 @@ export enum SessionType {
 
 export type Task = {
   id: string;
-  name: string;
-  pomodoroCount: number;
-  isComplete: boolean;
-  taskLength: number;
+  originalStart: number;
+  sessionLength: number;
+  end: number;
 };
 
 export interface SettingsState {

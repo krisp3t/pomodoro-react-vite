@@ -1,16 +1,24 @@
-import React from 'react';
 import {
   Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Icon,
 } from '@chakra-ui/react';
 
-import Task from './Task.tsx';
+import { IconType } from 'react-icons';
+import Task from './Task';
+import type { Task as TaskType } from '../../types/types';
 
-export default function LogMode(props) {
-  const content = props.items.map((item) => (
+export default function LogMode({
+  mode, tasks, colorScheme, icon,
+}: {
+  mode: string,
+  tasks: TaskType[],
+  colorScheme: string,
+  icon: IconType,
+}) {
+  const content = tasks.map((t: TaskType) => (
     <Task
-      key={item.originalStart}
-      action={item}
-      colorScheme={props.colorScheme}
+      key={t.originalStart}
+      action={t}
+      colorScheme={colorScheme}
     />
   )).reverse();
 
@@ -19,9 +27,9 @@ export default function LogMode(props) {
       <AccordionItem>
         <h2>
           <AccordionButton>
-            <Icon as={props.icon} display="inline" mr={2} />
+            <Icon as={icon} display="inline" mr={2} />
             <Box flex="1" textAlign="left" fontWeight={500}>
-              {props.mode.charAt(0) + props.mode.substring(1).toLowerCase()}
+              {mode.charAt(0) + mode.substring(1).toLowerCase()}
             </Box>
             <AccordionIcon />
           </AccordionButton>
