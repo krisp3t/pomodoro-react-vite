@@ -1,5 +1,7 @@
 // Library imports
-import { useContext, useReducer } from 'react';
+import {
+  useContext, useReducer, useRef, useState,
+} from 'react';
 import { Container, Divider, VStack } from '@chakra-ui/react';
 
 // App imports
@@ -38,8 +40,6 @@ function startAlarm(volume: number) {
 }
 
 function modeReducer(state: Task, action: TaskAction) {
-  console.log('modeReducer', state, action);
-
   const { type, payload } = action;
   const newTask : Task = {
     type: TaskModeEnum.INITIAL,
@@ -58,11 +58,13 @@ function modeReducer(state: Task, action: TaskAction) {
             ...newTask,
             type: TaskModeEnum.WORKING,
           };
+        // Working -> break
         case TaskModeEnum.WORKING:
           return {
             ...newTask,
             type: TaskModeEnum.SHORT_BREAK,
           };
+        // Break -> working
         case TaskModeEnum.SHORT_BREAK:
         case TaskModeEnum.LONG_BREAK:
           return {
@@ -100,14 +102,13 @@ function modeReducer(state: Task, action: TaskAction) {
 
 function completeTasksReducer(state: CompletedTasks, action: CompleteTaskAction) {
   const { type, payload } = action;
-  console.log('completeTasksReducer', state, type, payload);
 
   if (type === CompleteActionEnum.CLEAR) return initialTasks;
   if (!payload) throw new Error('Payload must be defined');
   if (type !== CompleteActionEnum.ADD) throw new Error(`Unhandled action type: ${type}`);
 
   payload.end = Date.now();
-  payload.length += payload.end - payload.currentStart;
+  payload.length = payload.end - payload.currentStart;
   switch (payload.type) {
     // Working -> break
     case TaskModeEnum.INITIAL:
@@ -121,8 +122,6 @@ function completeTasksReducer(state: CompletedTasks, action: CompleteTaskAction)
     case TaskModeEnum.PAUSED:
       return { ...state, pauses: [...state.pauses, payload] };
     default:
-      console.log('payload.type', payload.type);
-
       throw new Error(`Unhandled action type: ${type}`);
   }
 }
@@ -131,14 +130,14 @@ export default function App() {
   const settingsCtx = useContext(SettingsContext);
   const [completedTasks, dispatchComplete] = useReducer(completeTasksReducer, initialTasks);
   const [task, dispatchTask] = useReducer(modeReducer, initialTask);
-  console.log('completedTasks', completedTasks);
+  const [msPassed, setMsPassed] = useState(task.length);
 
   return (
     <>
       <Navbar />
       <Container maxW="container.lg" centerContent p={6}>
         <VStack w="100%">
-          <Session task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} />
+          <Session task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} msPassed={msPassed} setMsPassed={setMsPassed} />
           <Divider borderColor="gray.200" />
           {settingsCtx.isStatistics && (
           <>

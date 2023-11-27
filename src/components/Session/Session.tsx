@@ -26,7 +26,7 @@ export default function Session({
   dispatchTask: (arg0: TaskAction) => void;
   dispatchComplete: (arg0: CompleteTaskAction) => void;
 }) {
-  const [msPassed, setMsPassed] = useState(task.length);
+  const [msPassed, setMsPassed] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const settingsCtx = useContext(SettingsContext);
 
@@ -36,13 +36,13 @@ export default function Session({
 
   useEffect(() => {
     if (task.type === TaskModeEnum.INITIAL) {
+      setMsPassed(0);
       if (intervalRef.current) clearInterval(intervalRef.current);
       intervalRef.current = null;
-      // setMsPassed(0);
       return;
     }
     if (intervalRef.current) {
-      // setMsPassed(task.length);
+      setMsPassed(task.length);
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
@@ -50,19 +50,22 @@ export default function Session({
       setMsPassed(task.length + (Date.now() - task.currentStart));
     }, 1000);
 
-    return () => { clearInterval(intervalRef.current); };
-  }, [task]);
+    return () => clearInterval(intervalRef.current);
+  }, [task.type]);
 
-  // Complete the task:
-  // Working -> break
-  // Long break -> working
-  // Short break -> working
-  if ((msPassed > settingsCtx.pomodoroDuration && task.type === TaskModeEnum.WORKING)
-    || (msPassed > settingsCtx.longBreakDuration && task.type === TaskModeEnum.LONG_BREAK)
-      || (msPassed > settingsCtx.shortBreakDuration && task.type === TaskModeEnum.SHORT_BREAK)) {
-    dispatchComplete({ type: CompleteActionEnum.ADD, payload: task });
-    dispatchTask({ type: TaskActionEnum.START, payload: msPassed });
-  }
+  useEffect(() => {
+    // Complete the task:
+    // Working -> break
+    // Long break -> working
+    // Short break -> working
+    if ((msPassed > settingsCtx.pomodoroDuration && task.type === TaskModeEnum.WORKING)
+        || (msPassed > settingsCtx.longBreakDuration && task.type === TaskModeEnum.LONG_BREAK)
+        || (msPassed > settingsCtx.shortBreakDuration && task.type === TaskModeEnum.SHORT_BREAK)) {
+      setMsPassed(0);
+      dispatchTask({ type: TaskActionEnum.START, payload: msPassed });
+      dispatchComplete({ type: CompleteActionEnum.ADD, payload: task });
+    }
+  }, [dispatchTask, msPassed, settingsCtx, task.type]);
 
   return (
     <Box pb={10} textAlign="center">
@@ -72,7 +75,7 @@ export default function Session({
           <p>{outputInterval(msPassed)}</p>
         </Heading>
       </Box>
-      <SessionButtons task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} secondsPassed={msPassed} />
+      <SessionButtons task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} msPassed={msPassed} setMsPassed={setMsPassed} />
     </Box>
   );
 }

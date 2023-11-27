@@ -7,12 +7,13 @@ import {
 } from '../../types/types';
 
 export default function SessionButtons({
-  task, dispatchTask, dispatchComplete, secondsPassed,
+  task, dispatchTask, dispatchComplete, msPassed, setMsPassed,
 } : {
   task: Task,
   dispatchTask: (arg0: TaskAction) => void;
   dispatchComplete: (arg0: CompleteTaskAction) => void;
-  secondsPassed: number;
+  msPassed: number;
+  setMsPassed: (arg0: number) => void;
 }) {
   return (
     <ButtonGroup spacing="6">
@@ -22,8 +23,9 @@ export default function SessionButtons({
         shadow="md"
         isDisabled={[TaskModeEnum.WORKING, TaskModeEnum.SHORT_BREAK, TaskModeEnum.LONG_BREAK].includes(task.type)}
         onClick={() => {
+          setMsPassed(task.previous?.length ?? 0);
           dispatchComplete({ type: CompleteActionEnum.ADD, payload: task });
-          dispatchTask({ type: TaskActionEnum.START, payload: secondsPassed });
+          dispatchTask({ type: TaskActionEnum.START, payload: msPassed });
         }}
       >
         Start
@@ -33,7 +35,7 @@ export default function SessionButtons({
         leftIcon={<VscDebugPause />}
         shadow="md"
         isDisabled={[TaskModeEnum.INITIAL, TaskModeEnum.PAUSED].includes(task.type)}
-        onClick={() => dispatchTask({ type: TaskActionEnum.PAUSE, payload: secondsPassed })}
+        onClick={() => dispatchTask({ type: TaskActionEnum.PAUSE, payload: msPassed })}
       >
         Pause
       </Button>
@@ -50,7 +52,11 @@ export default function SessionButtons({
         leftIcon={<RiSkipForwardLine />}
         shadow="md"
         display={task.type === TaskModeEnum.LONG_BREAK || task.type === TaskModeEnum.SHORT_BREAK ? 'flex' : 'none'}
-        onClick={() => dispatchTask({ type: TaskActionEnum.SKIP, payload: null })}
+        onClick={() => {
+          setMsPassed(0);
+          dispatchComplete({ type: CompleteActionEnum.ADD, payload: task });
+          dispatchTask({ type: TaskActionEnum.SKIP, payload: null });
+        }}
       >
         Skip
       </Button>
