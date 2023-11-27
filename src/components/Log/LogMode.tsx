@@ -29,7 +29,7 @@ export default function LogMode({
           <AccordionButton>
             <Icon as={icon} display="inline" mr={2} />
             <Box flex="1" textAlign="left" fontWeight={500}>
-              {mode.charAt(0) + mode.substring(1).toLowerCase()}
+              {mode.charAt(0) + mode.replace('_', ' ').substring(1).toLowerCase()}
             </Box>
             <AccordionIcon />
           </AccordionButton>

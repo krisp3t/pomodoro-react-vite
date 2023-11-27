@@ -24,7 +24,7 @@ export enum TaskActionEnum {
 
 export interface TaskAction {
   type: TaskActionEnum;
-  payload: number;
+  payload: number | null;
 }
 
 export interface SettingsState {

@@ -21,7 +21,7 @@ export default function SettingsNumberInput({
       }
       min={min}
       max={max}
-      step={1}
+      step={0.1}
       value={value / 60000}
       onChange={onChange}
     >

@@ -58,7 +58,7 @@ export default function SettingsDrawer({ isOpen, onClose } : {
               <FormLabel>Pomodoro length (minutes)</FormLabel>
               <SettingsNumberInput
                 value={settingsCandidate.pomodoroDuration}
-                min={5}
+                min={0.1}
                 max={120}
                 onChange={(_valS: string, valN: number) => onChangeCandidate(
                   { pomodoroDuration: valN * 60000 },
@@ -69,7 +69,7 @@ export default function SettingsDrawer({ isOpen, onClose } : {
               <FormLabel>Short break length (minutes)</FormLabel>
               <SettingsNumberInput
                 value={settingsCandidate.shortBreakDuration}
-                min={1}
+                min={0.1}
                 max={15}
                 onChange={(_valS: string, valN: number) => onChangeCandidate(
                   { shortBreakDuration: valN * 60000 },
@@ -80,7 +80,7 @@ export default function SettingsDrawer({ isOpen, onClose } : {
               <FormLabel>Long break length (minutes)</FormLabel>
               <SettingsNumberInput
                 value={settingsCandidate.longBreakDuration}
-                min={1}
+                min={0.1}
                 max={60}
                 onChange={(_valS: string, valN: number) => onChangeCandidate(
                   { longBreakDuration: valN * 60000 },

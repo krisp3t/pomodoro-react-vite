@@ -1,5 +1,6 @@
 // External imports
 import {
+  useCallback,
   useContext, useEffect, useRef, useState,
 } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
@@ -10,7 +11,12 @@ import StateDisplay from './StateDisplay';
 import SessionButtons from './SessionButtons';
 import { SettingsContext } from '../../store/SettingsContext';
 import {
-  CompleteTaskAction, Task, TaskAction, TaskModeEnum,
+  CompleteActionEnum,
+  CompleteTaskAction,
+  Task,
+  TaskAction,
+  TaskActionEnum,
+  TaskModeEnum,
 } from '../../types/types';
 
 export default function Session({
@@ -32,20 +38,31 @@ export default function Session({
     if (task.type === TaskModeEnum.INITIAL) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       intervalRef.current = null;
-      setMsPassed(0);
+      // setMsPassed(0);
       return;
     }
     if (intervalRef.current) {
-      setMsPassed(task.length);
+      // setMsPassed(task.length);
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
     intervalRef.current = setInterval(() => {
       setMsPassed(task.length + (Date.now() - task.currentStart));
     }, 1000);
+
+    return () => { clearInterval(intervalRef.current); };
   }, [task]);
 
-  console.log('task', task);
+  // Complete the task:
+  // Working -> break
+  // Long break -> working
+  // Short break -> working
+  if ((msPassed > settingsCtx.pomodoroDuration && task.type === TaskModeEnum.WORKING)
+    || (msPassed > settingsCtx.longBreakDuration && task.type === TaskModeEnum.LONG_BREAK)
+      || (msPassed > settingsCtx.shortBreakDuration && task.type === TaskModeEnum.SHORT_BREAK)) {
+    dispatchComplete({ type: CompleteActionEnum.ADD, payload: task });
+    dispatchTask({ type: TaskActionEnum.START, payload: msPassed });
+  }
 
   return (
     <Box pb={10} textAlign="center">

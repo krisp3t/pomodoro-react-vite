@@ -3,7 +3,7 @@ import { VscClearAll, VscCheck, VscDebugPause } from 'react-icons/vsc';
 import { GiNightSleep } from 'react-icons/gi';
 
 import LogMode from './LogMode';
-import {CompletedTasks, TaskModeEnum} from '../../types/types';
+import { CompletedTasks, TaskModeEnum } from '../../types/types';
 
 export default function Log({ clear, items } : { clear: () => void, items: CompletedTasks }) {
   return (

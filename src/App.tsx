@@ -58,6 +58,17 @@ function modeReducer(state: Task, action: TaskAction) {
             ...newTask,
             type: TaskModeEnum.WORKING,
           };
+        case TaskModeEnum.WORKING:
+          return {
+            ...newTask,
+            type: TaskModeEnum.SHORT_BREAK,
+          };
+        case TaskModeEnum.SHORT_BREAK:
+        case TaskModeEnum.LONG_BREAK:
+          return {
+            ...newTask,
+            type: TaskModeEnum.WORKING,
+          };
         // Paused -> working, break
         case TaskModeEnum.PAUSED:
           return {
