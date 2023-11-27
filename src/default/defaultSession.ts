@@ -1,36 +1,16 @@
-export const SESSION_MODES = {
-  working: {
-    status: 'WORKING',
-    originalStart: 0,
-    currentStart: 0,
-    accumulated: 0,
-    sessionLength: 0,
-  },
-  breaking: {
-    status: 'RESTING',
-  },
-  shortBreak: {
-    status: 'RESTING',
-    length: 'SHORT_BREAK',
-    originalStart: 0,
-    currentStart: 0,
-    accumulated: 0,
-    sessionLength: 0,
-  },
-  longBreak: {
-    status: 'RESTING',
-    length: 'LONG_BREAK',
-    originalStart: 0,
-    currentStart: 0,
-    accumulated: 0,
-    sessionLength: 0,
-  },
-  paused: {
-    status: 'PAUSED',
-    originalStart: 0,
-    previousState: null,
-  },
-  initial: {
-    status: 'INITIAL',
-  },
+import { CompletedTasks, TaskModeEnum } from '../types/types';
+
+export const initialTasks: CompletedTasks = {
+  work: [],
+  breaks: [],
+  pauses: [],
+};
+
+export const initialTask = {
+  id: 0,
+  type: TaskModeEnum.INITIAL,
+  start: 0,
+  length: 0,
+  end: 0,
+  previous: null,
 };

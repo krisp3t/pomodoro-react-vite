@@ -1,4 +1,4 @@
-export enum TaskEnum {
+export enum TaskModeEnum {
   WORKING = 'WORKING',
   SHORT_BREAK = 'SHORT_BREAK',
   LONG_BREAK = 'LONG_BREAK',
@@ -7,11 +7,12 @@ export enum TaskEnum {
 }
 
 export type Task = {
-  id: string;
-  type: TaskEnum;
+  id: number;
+  type: TaskModeEnum;
   start: number;
-  taskLength: number;
+  length: number;
   end: number;
+  previous: Task | null;
 };
 
 export enum TaskActionEnum {
@@ -44,3 +45,7 @@ export interface CompletedTasks {
   breaks: Task[];
   pauses: Task[];
 }
+
+export type State = {
+  task
+};

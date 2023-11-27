@@ -2,10 +2,10 @@ import { Button, ButtonGroup } from '@chakra-ui/react';
 import { VscDebugPause, VscDebugRestart, VscDebugStart } from 'react-icons/vsc';
 import { RiSkipForwardLine } from 'react-icons/ri';
 
-import { TaskActionEnum, TaskEnum, TaskAction } from '../../types/types';
+import { TaskActionEnum, TaskModeEnum, TaskAction } from '../../types/types';
 
 export default function SessionButtons({ mode, dispatch, secondsPassed } : {
-  mode: TaskEnum,
+  mode: TaskModeEnum,
   dispatch: (arg0: TaskAction) => void;
   secondsPassed: number;
 }) {
@@ -15,7 +15,7 @@ export default function SessionButtons({ mode, dispatch, secondsPassed } : {
         colorScheme="green"
         leftIcon={<VscDebugStart />}
         shadow="md"
-        isDisabled={[TaskEnum.WORKING, TaskEnum.SHORT_BREAK, TaskEnum.LONG_BREAK].includes(mode)}
+        isDisabled={[TaskModeEnum.WORKING, TaskModeEnum.SHORT_BREAK, TaskModeEnum.LONG_BREAK].includes(mode)}
         onClick={() => dispatch({ type: TaskActionEnum.START, payload: secondsPassed })}
       >
         Start
@@ -24,7 +24,7 @@ export default function SessionButtons({ mode, dispatch, secondsPassed } : {
         colorScheme="red"
         leftIcon={<VscDebugPause />}
         shadow="md"
-        isDisabled={[TaskEnum.INITIAL, TaskEnum.PAUSED].includes(mode)}
+        isDisabled={[TaskModeEnum.INITIAL, TaskModeEnum.PAUSED].includes(mode)}
         onClick={() => dispatch({ type: TaskActionEnum.PAUSE, payload: secondsPassed })}
       >
         Pause
@@ -41,7 +41,7 @@ export default function SessionButtons({ mode, dispatch, secondsPassed } : {
         colorScheme="blue"
         leftIcon={<RiSkipForwardLine />}
         shadow="md"
-        display={mode === TaskEnum.LONG_BREAK || mode === TaskEnum.SHORT_BREAK ? 'flex' : 'none'}
+        display={mode === TaskModeEnum.LONG_BREAK || mode === TaskModeEnum.SHORT_BREAK ? 'flex' : 'none'}
         onClick={() => dispatch({ type: TaskActionEnum.SKIP, payload: null })}
       >
         Skip

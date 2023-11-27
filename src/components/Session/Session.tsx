@@ -9,10 +9,10 @@ import outputInterval, { timestampToOutput } from './Session.utils';
 import StateDisplay from './StateDisplay';
 import SessionButtons from './SessionButtons';
 import { SettingsContext } from '../../store/SettingsContext';
-import { TaskAction, TaskEnum } from '../../types/types';
+import { TaskAction, TaskModeEnum } from '../../types/types';
 
 export default function Session({ mode, dispatchMode, initialSecondsPassed } : {
-  mode: TaskEnum,
+  mode: TaskModeEnum,
   dispatchMode: (arg0: TaskAction) => void;
   initialSecondsPassed: number;
 }) {

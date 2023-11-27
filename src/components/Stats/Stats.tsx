@@ -6,15 +6,15 @@ import { CompletedTasks } from '../../types/types';
 
 export default function Stats({ tasks } : { tasks: CompletedTasks }) {
   const workingLength = tasks.work.reduce(
-    (prev, currentValue) => prev + currentValue.taskLength,
+    (prev, currentValue) => prev + currentValue.length,
     0,
   );
   const restingLength = tasks.breaks.reduce(
-    (prev, currentValue) => prev + currentValue.taskLength,
+    (prev, currentValue) => prev + currentValue.length,
     0,
   );
   const pausedLength = tasks.pauses.reduce(
-    (prev, currentValue) => prev + currentValue.taskLength,
+    (prev, currentValue) => prev + currentValue.length,
     0,
   );
 
