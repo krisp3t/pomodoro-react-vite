@@ -12,17 +12,13 @@ import { TaskModeEnum } from '../../types/types';
 
 export default function Task({ colorScheme, task }: { colorScheme: string, task: TaskType }) {
   const originalStart = new Date(task.originalStart);
-  const end = task.end ? new Date(task.end) : new Date(task.currentStart + task.length);
+  const end = task.end ? new Date(task.end) : 0;
   const settingsCtx = useContext(SettingsContext);
 
   function timestampToOutput(t: TaskType) {
     switch (t.type) {
       case TaskModeEnum.WORKING:
         return outputInterval(settingsCtx.pomodoroDuration);
-      case TaskModeEnum.SHORT_BREAK:
-        return outputInterval(settingsCtx.shortBreakDuration);
-      case TaskModeEnum.LONG_BREAK:
-        return outputInterval(settingsCtx.longBreakDuration);
       default:
         return outputInterval(t.length);
     }

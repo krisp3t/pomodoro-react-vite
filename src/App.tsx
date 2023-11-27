@@ -107,8 +107,7 @@ function completeTasksReducer(state: CompletedTasks, action: CompleteTaskAction)
   if (!payload) throw new Error('Payload must be defined');
   if (type !== CompleteActionEnum.ADD) throw new Error(`Unhandled action type: ${type}`);
 
-  payload.end = Date.now();
-  payload.length = payload.end - payload.currentStart;
+  console.log('payload', payload);
   switch (payload.type) {
     // Working -> break
     case TaskModeEnum.INITIAL:
@@ -130,7 +129,7 @@ export default function App() {
   const settingsCtx = useContext(SettingsContext);
   const [completedTasks, dispatchComplete] = useReducer(completeTasksReducer, initialTasks);
   const [task, dispatchTask] = useReducer(modeReducer, initialTask);
-  const [msPassed, setMsPassed] = useState(task.length);
+  const [msPassed, setMsPassed] = useState(0);
 
   return (
     <>

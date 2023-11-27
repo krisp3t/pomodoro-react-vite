@@ -24,7 +24,7 @@ export default function SessionButtons({
         isDisabled={[TaskModeEnum.WORKING, TaskModeEnum.SHORT_BREAK, TaskModeEnum.LONG_BREAK].includes(task.type)}
         onClick={() => {
           setMsPassed(task.previous?.length ?? 0);
-          dispatchComplete({ type: CompleteActionEnum.ADD, payload: task });
+          dispatchComplete({ type: CompleteActionEnum.ADD, payload: { ...task, end: Date.now(), length: Date.now() - task.currentStart } });
           dispatchTask({ type: TaskActionEnum.START, payload: msPassed });
         }}
       >
@@ -53,8 +53,7 @@ export default function SessionButtons({
         shadow="md"
         display={task.type === TaskModeEnum.LONG_BREAK || task.type === TaskModeEnum.SHORT_BREAK ? 'flex' : 'none'}
         onClick={() => {
-          setMsPassed(0);
-          dispatchComplete({ type: CompleteActionEnum.ADD, payload: task });
+          dispatchComplete({ type: CompleteActionEnum.ADD, payload: { ...task, end: Date.now(), length: task.length + Date.now() - task.currentStart } });
           dispatchTask({ type: TaskActionEnum.SKIP, payload: null });
         }}
       >

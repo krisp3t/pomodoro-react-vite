@@ -63,10 +63,11 @@ export default function Session({
         || (msPassed > settingsCtx.shortBreakDuration && task.type === TaskModeEnum.SHORT_BREAK)) {
       setMsPassed(0);
       dispatchTask({ type: TaskActionEnum.START, payload: msPassed });
-      dispatchComplete({ type: CompleteActionEnum.ADD, payload: task });
+      dispatchComplete({ type: CompleteActionEnum.ADD, payload: { ...task, end: Date.now(), length: task.length + Date.now() - task.currentStart } });
     }
   }, [dispatchTask, msPassed, settingsCtx, task.type]);
 
+  console.log('session', task);
   return (
     <Box pb={10} textAlign="center">
       <Box pb={5}>
