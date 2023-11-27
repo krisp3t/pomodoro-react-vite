@@ -7,26 +7,24 @@ export enum TaskModeEnum {
 }
 
 export type Task = {
-  id: number;
   type: TaskModeEnum;
-  start: number;
+  originalStart: number;
+  currentStart: number;
   length: number;
-  end: number;
+  end: number | null;
   previous: Task | null;
 };
 
 export enum TaskActionEnum {
   START = 'START',
   PAUSE = 'PAUSE',
-  CLEAR = 'CLEAR',
   RESET = 'RESET',
   SKIP = 'SKIP',
-  COMPLETE = 'COMPLETE',
 }
 
 export interface TaskAction {
   type: TaskActionEnum;
-  payload: number | null;
+  payload: number;
 }
 
 export interface SettingsState {
@@ -46,6 +44,11 @@ export interface CompletedTasks {
   pauses: Task[];
 }
 
-export type State = {
-  task
-};
+export enum CompleteActionEnum {
+  ADD = 'ADD',
+  CLEAR = 'CLEAR',
+}
+export interface CompleteTaskAction {
+  type: CompleteActionEnum,
+  payload: Task | null
+}

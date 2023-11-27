@@ -7,7 +7,6 @@ export const initialTasks: CompletedTasks = {
 };
 
 export const initialTask = {
-  id: 0,
   type: TaskModeEnum.INITIAL,
   start: 0,
   length: 0,

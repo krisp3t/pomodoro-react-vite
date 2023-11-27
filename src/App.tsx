@@ -1,5 +1,5 @@
 // Library imports
-import { useContext, useReducer, useState } from 'react';
+import { useContext, useReducer } from 'react';
 import { Container, Divider, VStack } from '@chakra-ui/react';
 
 // App imports
@@ -13,9 +13,15 @@ import alarmSound from './assets/alarm.mp3';
 // Context imports
 import { SettingsContext } from './store/SettingsContext';
 import {
-  CompletedTasks, TaskAction, TaskActionEnum, TaskModeEnum,
+  CompleteActionEnum,
+  CompletedTasks,
+  CompleteTaskAction,
+  Task,
+  TaskAction,
+  TaskActionEnum,
+  TaskModeEnum,
 } from './types/types';
-import { initialTasks, initialTask } from './default/defaultSession';
+import { initialTask, initialTasks } from './default/defaultSession';
 
 function getNotification(type: 'break' | 'work') {
   const text = type === 'break' ? 'Work session completed! Good work, now take a break 😉🔥' : 'Break is over - back to grinding! 💪';
@@ -31,70 +37,95 @@ function startAlarm(volume: number) {
   alarm.play();
 }
 
-function modeReducer(state: TaskModeEnum, action: TaskAction) {
+function modeReducer(state: Task, action: TaskAction) {
+  console.log('modeReducer', state, action);
+
   const { type, payload } = action;
-  if (!payload) {
-    if (type === TaskActionEnum.CLEAR) {
-      return TaskModeEnum.INITIAL;
-    }
-    return state;
-  }
+  const newTask : Task = {
+    type: TaskModeEnum.INITIAL,
+    originalStart: Date.now(),
+    currentStart: Date.now(),
+    length: 0,
+    end: null,
+    previous: null,
+  };
   switch (type) {
     case TaskActionEnum.START:
-      return state;
+      switch (state.type) {
+        // Initial -> working
+        case TaskModeEnum.INITIAL:
+          return {
+            ...newTask,
+            type: TaskModeEnum.WORKING,
+          };
+        // Paused -> working, break
+        case TaskModeEnum.PAUSED:
+          return {
+            ...state.previous,
+            currentStart: Date.now(),
+          };
+        default:
+          throw new Error(`Unhandled action type: ${type}`);
+      }
+    // Working, break -> paused
     case TaskActionEnum.PAUSE:
-      return state;
+      if (state.type === TaskModeEnum.PAUSED) return state;
+      return {
+        ...newTask,
+        type: TaskModeEnum.PAUSED,
+        previous: { ...state, length: payload },
+      };
     case TaskActionEnum.RESET:
-      return state;
+      return initialTask;
     case TaskActionEnum.SKIP:
-      return state;
-    case TaskActionEnum.COMPLETE:
-      return state;
-    case TaskActionEnum.CLEAR:
-      return TaskModeEnum.INITIAL;
+      return {
+        ...newTask,
+        type: TaskModeEnum.WORKING,
+      };
     default:
-      return state;
+      throw new Error(`Unhandled action type: ${type}`);
   }
 }
 
-function completedTasksReducer(state: CompletedTasks, action: TaskAction) {
+function completeTasksReducer(state: CompletedTasks, action: CompleteTaskAction) {
   const { type, payload } = action;
-  if (!payload) {
-    if (type === TaskActionEnum.CLEAR) {
-      return { work: [], breaks: [], pauses: [] };
-    }
-    return state;
-  }
-  switch (type) {
-    case TaskActionEnum.START:
+  console.log('completeTasksReducer', state, type, payload);
+
+  if (type === CompleteActionEnum.CLEAR) return initialTasks;
+  if (!payload) throw new Error('Payload must be defined');
+  if (type !== CompleteActionEnum.ADD) throw new Error(`Unhandled action type: ${type}`);
+
+  switch (payload.type) {
+    // Working -> break
+    case TaskModeEnum.INITIAL:
       return state;
-    case TaskActionEnum.PAUSE:
-      return state;
-    case TaskActionEnum.RESET:
-      return state;
-    case TaskActionEnum.SKIP:
-      return state;
-    case TaskActionEnum.COMPLETE:
-      return state;
-    case TaskActionEnum.CLEAR:
-      return { work: [], breaks: [], pauses: [] };
+    case TaskModeEnum.WORKING:
+      return { ...state, work: [...state.work, payload] };
+    // Break -> working
+    case TaskModeEnum.SHORT_BREAK:
+    case TaskModeEnum.LONG_BREAK:
+      return { ...state, breaks: [...state.breaks, payload] };
+    case TaskModeEnum.PAUSED:
+      return { ...state, pauses: [...state.pauses, payload] };
     default:
-      return state;
+      console.log('payload.type', payload.type);
+
+      throw new Error(`Unhandled action type: ${type}`);
   }
 }
 
 export default function App() {
   const settingsCtx = useContext(SettingsContext);
-  const [completedTasks, dispatchCompletedTasks] = useReducer(completedTasksReducer, initialTasks);
-  const [mode, dispatchMode] = useReducer(modeReducer, initialTask);
-  const [previousSecondsPassed, setPreviousSecondsPassed] = useState(0);
+  const [completedTasks, dispatchComplete] = useReducer(completeTasksReducer, initialTasks);
+  const [task, dispatchTask] = useReducer(modeReducer, initialTask);
+  console.log('completedTasks', completedTasks);
 
   return (
     <>
       <Navbar />
       <Container maxW="container.lg" centerContent p={6}>
         <VStack w="100%">
-          <Session mode={mode} dispatchMode={dispatchCompletedTasks} initialSecondsPassed={0} />
+          <Session task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} />
           <Divider borderColor="gray.200" />
           {settingsCtx.isStatistics && (
           <>
@@ -106,7 +137,7 @@ export default function App() {
               && (
               <Log
                 items={completedTasks}
-                clear={() => dispatchCompletedTasks({ type: TaskActionEnum.CLEAR, payload: null })}
+                clear={() => dispatchComplete({ type: CompleteActionEnum.CLEAR, payload: null })}
               />
               )}
         </VStack>

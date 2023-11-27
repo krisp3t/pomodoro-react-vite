@@ -10,4 +10,5 @@ export default function StateDisplay({ mode }: { mode: TaskModeEnum }) {
       {mode !== TaskModeEnum.INITIAL ? capitalizeText : ''}
     </Tag>
   );
+
 }

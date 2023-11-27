@@ -3,8 +3,7 @@ import { VscClearAll, VscCheck, VscDebugPause } from 'react-icons/vsc';
 import { GiNightSleep } from 'react-icons/gi';
 
 import LogMode from './LogMode';
-import { CompletedTasks } from '../../types/types';
-import { SESSION_MODES } from '../../default/defaultSession';
+import {CompletedTasks, TaskModeEnum} from '../../types/types';
 
 export default function Log({ clear, items } : { clear: () => void, items: CompletedTasks }) {
   return (
@@ -21,19 +20,19 @@ export default function Log({ clear, items } : { clear: () => void, items: Compl
       </Box>
       <Box display="flex" flexDirection={{ base: 'column', md: 'row' }} w="100%" gap={10}>
         <LogMode
-          mode={SESSION_MODES.working.status}
+          mode={TaskModeEnum.WORKING}
           tasks={items.work}
           colorScheme="green"
           icon={VscCheck}
         />
         <LogMode
-          mode={SESSION_MODES.breaking.status}
+          mode={TaskModeEnum.SHORT_BREAK}
           tasks={items.breaks}
           colorScheme="blue"
           icon={GiNightSleep}
         />
         <LogMode
-          mode={SESSION_MODES.paused.status}
+          mode={TaskModeEnum.PAUSED}
           tasks={items.pauses}
           colorScheme="red"
           icon={VscDebugPause}
@@ -42,3 +41,5 @@ export default function Log({ clear, items } : { clear: () => void, items: Compl
     </Box>
   );
 }
+
+// TODO: rewrite logging to include long breaks
