@@ -95,6 +95,8 @@ function completeTasksReducer(state: CompletedTasks, action: CompleteTaskAction)
   if (!payload) throw new Error('Payload must be defined');
   if (type !== CompleteActionEnum.ADD) throw new Error(`Unhandled action type: ${type}`);
 
+  payload.end = Date.now();
+  payload.length += payload.end - payload.currentStart;
   switch (payload.type) {
     // Working -> break
     case TaskModeEnum.INITIAL:

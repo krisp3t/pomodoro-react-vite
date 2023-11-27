@@ -8,7 +8,8 @@ export const initialTasks: CompletedTasks = {
 
 export const initialTask = {
   type: TaskModeEnum.INITIAL,
-  start: 0,
+  originalStart: Date.now(),
+  currentStart: Date.now(),
   length: 0,
   end: 0,
   previous: null,

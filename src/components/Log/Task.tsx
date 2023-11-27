@@ -7,8 +7,9 @@ import { timestampToOutput, formatHours, formatMinutes } from '../Session/Sessio
 import type { Task as TaskType } from '../../types/types';
 
 export default function Task({ colorScheme, task }: { colorScheme: string, task: TaskType }) {
-  const originalStart = new Date(task.start);
-  const end = new Date(task.end);
+  const originalStart = new Date(task.originalStart);
+  const end = task.end ? new Date(task.end) : new Date(task.currentStart + task.length);
+
   return (
     <Box display="flex" alignItems="center" mb={2} justifyContent="space-between">
       <Badge
@@ -26,6 +27,7 @@ export default function Task({ colorScheme, task }: { colorScheme: string, task:
           {formatMinutes(originalStart)}
           {' '}
           -
+          {' '}
           {formatHours(end)}
           :
           {formatMinutes(end)}

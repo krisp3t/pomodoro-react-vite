@@ -8,11 +8,11 @@ export enum TaskModeEnum {
 
 export type Task = {
   type: TaskModeEnum;
-  originalStart: number;
-  currentStart: number;
-  length: number;
-  end: number | null;
-  previous: Task | null;
+  originalStart: number; // Timestamp when originally started
+  currentStart: number; // Timestamp when last resumed
+  length: number; // Accumulated length before all pauses
+  end: number | null; // Timestamp when completed
+  previous: Task | null; // Task before pausing so we can restore it
 };
 
 export enum TaskActionEnum {
