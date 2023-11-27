@@ -39,7 +39,7 @@ export default function Task({ colorScheme, task }: { colorScheme: string, task:
         colorScheme={colorScheme}
       >
         <Icon as={BsHourglassSplit} display="inline" mr={1} />
-        {timestampToOutput(task.sessionLength)}
+        {timestampToOutput(task.taskLength)}
       </Badge>
     </Box>
   );

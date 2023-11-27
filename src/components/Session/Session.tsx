@@ -5,15 +5,15 @@ import {
 import { Box, Heading } from '@chakra-ui/react';
 
 // App imports
-import interval, { timestampToOutput } from './Session.utils';
+import outputInterval, { timestampToOutput } from './Session.utils';
 import StateDisplay from './StateDisplay';
 import SessionButtons from './SessionButtons';
 import { SettingsContext } from '../../store/SettingsContext';
-import { TaskEnum } from '../../types/types';
+import { TaskAction, TaskEnum } from '../../types/types';
 
 export default function Session({ mode, dispatchMode, initialSecondsPassed } : {
   mode: TaskEnum,
-  dispatchMode: (arg0: { type: string; settingsCtx: any; }) => void;
+  dispatchMode: (arg0: TaskAction) => void;
   initialSecondsPassed: number;
 }) {
   const [secondsPassed, setSecondsPassed] = useState(initialSecondsPassed);
@@ -29,10 +29,10 @@ export default function Session({ mode, dispatchMode, initialSecondsPassed } : {
       <Box pb={5}>
         <StateDisplay mode={mode} />
         <Heading>
-          <p>{interval(secondsPassed)}</p>
+          <p>{outputInterval(secondsPassed)}</p>
         </Heading>
       </Box>
-      <SessionButtons mode={mode} dispatch={dispatchMode} />
+      <SessionButtons mode={mode} dispatch={dispatchMode} secondsPassed={secondsPassed} />
     </Box>
   );
 }

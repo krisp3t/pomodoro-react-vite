@@ -10,7 +10,7 @@ export type Task = {
   id: string;
   type: TaskEnum;
   start: number;
-  sessionLength: number;
+  taskLength: number;
   end: number;
 };
 
@@ -20,6 +20,7 @@ export enum TaskActionEnum {
   CLEAR = 'CLEAR',
   RESET = 'RESET',
   SKIP = 'SKIP',
+  COMPLETE = 'COMPLETE',
 }
 
 export interface TaskAction {
