@@ -15,15 +15,6 @@ export default function Task({ colorScheme, task }: { colorScheme: string, task:
   const end = task.end ? new Date(task.end) : 0;
   const settingsCtx = useContext(SettingsContext);
 
-  function timestampToOutput(t: TaskType) {
-    switch (t.type) {
-      case TaskModeEnum.WORKING:
-        return outputInterval(settingsCtx.pomodoroDuration);
-      default:
-        return outputInterval(t.length);
-    }
-  }
-
   return (
     <Box display="flex" alignItems="center" mb={2} justifyContent="space-between">
       <Badge
@@ -55,7 +46,7 @@ export default function Task({ colorScheme, task }: { colorScheme: string, task:
         colorScheme={colorScheme}
       >
         <Icon as={BsHourglassSplit} display="inline" mr={1} />
-        {timestampToOutput(task)}
+        {outputInterval(task.length)}
       </Badge>
     </Box>
   );

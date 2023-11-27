@@ -16,7 +16,7 @@ export default function LogMode({
 }) {
   const content = tasks.map((t: TaskType) => (
     <Task
-      key={t.originalStart}
+      key={t.end}
       task={t}
       colorScheme={colorScheme}
     />
