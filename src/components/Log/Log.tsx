@@ -2,9 +2,9 @@ import { Box, Button } from '@chakra-ui/react';
 import { VscClearAll, VscCheck, VscDebugPause } from 'react-icons/vsc';
 import { GiNightSleep } from 'react-icons/gi';
 
-import { SESSION_MODES } from '../Session/Session';
 import LogMode from './LogMode';
 import { CompletedTasks } from '../../types/types';
+import { SESSION_MODES } from '../../default/defaultSession';
 
 export default function Log({ clear, items } : { clear: () => void, items: CompletedTasks }) {
   return (

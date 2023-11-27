@@ -14,6 +14,6 @@ export const timestampToOutput = (timestamp: number) => calculateMinSec(
   Math.round(timestamp / 1000),
 );
 
-export default function Interval(timestamp: number) {
+export default function interval(timestamp: number) {
   return (timestampToOutput(timestamp));
 }

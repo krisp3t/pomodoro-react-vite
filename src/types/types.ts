@@ -1,17 +1,31 @@
-export enum SessionType {
+export enum TaskEnum {
   WORKING = 'WORKING',
   SHORT_BREAK = 'SHORT_BREAK',
   LONG_BREAK = 'LONG_BREAK',
   PAUSED = 'PAUSED',
-  CLEAR = 'CLEAR',
+  INITIAL = 'INITIAL',
 }
 
 export type Task = {
   id: string;
-  originalStart: number;
+  type: TaskEnum;
+  start: number;
   sessionLength: number;
   end: number;
 };
+
+export enum TaskActionEnum {
+  START = 'START',
+  PAUSE = 'PAUSE',
+  CLEAR = 'CLEAR',
+  RESET = 'RESET',
+  SKIP = 'SKIP',
+}
+
+export interface TaskAction {
+  type: TaskActionEnum;
+  payload: number | null;
+}
 
 export interface SettingsState {
   pomodoroDuration: number;

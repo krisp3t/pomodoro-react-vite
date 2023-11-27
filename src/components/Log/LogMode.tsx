@@ -16,8 +16,8 @@ export default function LogMode({
 }) {
   const content = tasks.map((t: TaskType) => (
     <Task
-      key={t.originalStart}
-      action={t}
+      key={t.start}
+      task={t}
       colorScheme={colorScheme}
     />
   )).reverse();

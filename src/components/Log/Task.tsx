@@ -7,7 +7,7 @@ import { timestampToOutput, formatHours, formatMinutes } from '../Session/Sessio
 import type { Task as TaskType } from '../../types/types';
 
 export default function Task({ colorScheme, task }: { colorScheme: string, task: TaskType }) {
-  const originalStart = new Date(task.originalStart);
+  const originalStart = new Date(task.start);
   const end = new Date(task.end);
   return (
     <Box display="flex" alignItems="center" mb={2} justifyContent="space-between">
