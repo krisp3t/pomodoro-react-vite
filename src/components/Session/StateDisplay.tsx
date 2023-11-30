@@ -6,8 +6,15 @@ export default function StateDisplay({ mode }: { mode: TaskModeEnum }) {
   const capitalizeText = mode.charAt(0).toUpperCase()
     + mode.slice(1).toLowerCase().split('_').join(' ');
   return (
-    <Tag letterSpacing="1.5px" mb={3} shadow="sm" bgColor={bg}>
-      {mode !== TaskModeEnum.INITIAL ? capitalizeText : ''}
+    <Tag
+      display={mode !== TaskModeEnum.INITIAL ? 'flex' : 'none'}
+      letterSpacing="1.5px"
+      mb={3}
+      shadow="sm"
+      bgColor={bg}
+      maxW="fit-content"
+    >
+      {capitalizeText}
     </Tag>
   );
 }

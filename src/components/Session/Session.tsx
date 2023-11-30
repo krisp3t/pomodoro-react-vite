@@ -48,7 +48,7 @@ export default function Session({
     }
     intervalRef.current = setInterval(() => {
       setMsPassed(task.length + (Date.now() - task.currentStart));
-    }, 1000);
+    }, 500);
 
     return () => clearInterval(intervalRef.current);
   }, [task.type]);
@@ -70,13 +70,19 @@ export default function Session({
   console.log('session', task);
   return (
     <Box pb={10} textAlign="center">
-      <Box pb={5}>
+      <Box pb={5} display="flex" flexDir="column" alignItems="center">
         <StateDisplay mode={task.type} />
         <Heading>
           <p>{outputInterval(msPassed)}</p>
         </Heading>
       </Box>
-      <SessionButtons task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} msPassed={msPassed} setMsPassed={setMsPassed} />
+      <SessionButtons
+        task={task}
+        dispatchTask={dispatchTask}
+        dispatchComplete={dispatchComplete}
+        msPassed={msPassed}
+        setMsPassed={setMsPassed}
+      />
     </Box>
   );
 }

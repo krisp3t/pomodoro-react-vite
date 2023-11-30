@@ -15,6 +15,19 @@ export default function Task({ colorScheme, task }: { colorScheme: string, task:
   const end = task.end ? new Date(task.end) : 0;
   const settingsCtx = useContext(SettingsContext);
 
+  function intervalToOutput(task) {
+    switch (task.type) {
+      case TaskModeEnum.WORKING:
+        return task.length <= settingsCtx.pomodoroDuration;
+      case TaskModeEnum.SHORT_BREAK:
+        return task.length <= settingsCtx.shortBreakDuration ? outputInterval(task.length) : settingsCtx.shortBreakDuration;
+      case TaskModeEnum.LONG_BREAK:
+        return outputInterval(task.length);
+      default:
+        return new Error('Unhandled task type');
+    }
+  }
+
   return (
     <Box display="flex" alignItems="center" mb={2} justifyContent="space-between">
       <Badge
