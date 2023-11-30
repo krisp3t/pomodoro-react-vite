@@ -20,9 +20,15 @@ export default function Task({ colorScheme, task }: { colorScheme: string, task:
       case TaskModeEnum.WORKING:
         return outputInterval(settingsCtx.pomodoroDuration);
       case TaskModeEnum.SHORT_BREAK:
-        return t.length <= settingsCtx.shortBreakDuration ? outputInterval(t.length) : outputInterval(settingsCtx.shortBreakDuration);
+        return t.length <= settingsCtx.shortBreakDuration
+          ? outputInterval(t.length)
+          : outputInterval(settingsCtx.shortBreakDuration);
       case TaskModeEnum.LONG_BREAK:
-        return t.length <= settingsCtx.longBreakDuration ? outputInterval(t.length) : outputInterval(settingsCtx.longBreakDuration);
+        return t.length <= settingsCtx.longBreakDuration
+          ? outputInterval(t.length)
+          : outputInterval(settingsCtx.longBreakDuration);
+      case TaskModeEnum.PAUSED:
+        return outputInterval(t.length);
       default:
         return '';
     }

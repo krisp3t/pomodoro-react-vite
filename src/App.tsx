@@ -1,6 +1,6 @@
 // Library imports
 import {
-  useContext, useReducer, useRef, useState,
+  useContext, useEffect, useReducer, useRef, useState,
 } from 'react';
 import { Container, Divider, VStack } from '@chakra-ui/react';
 
@@ -127,16 +127,26 @@ function completeTasksReducer(state: CompletedTasks, action: CompleteTaskAction)
 
 export default function App() {
   const settingsCtx = useContext(SettingsContext);
-  const [completedTasks, dispatchComplete] = useReducer(completeTasksReducer, initialTasks);
+  const initialCompletedTasks = localStorage.getItem('completedTasks') ? JSON.parse(localStorage.getItem('completedTasks') ?? '') : initialTasks;
+  // check if initialCompletedTasks of type CompletedTasks
+
+  const [completedTasks, dispatchComplete] = useReducer(completeTasksReducer, initialCompletedTasks);
   const [task, dispatchTask] = useReducer(modeReducer, initialTask);
-  const [msPassed, setMsPassed] = useState(0);
+
+  useEffect(() => {
+    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+  }, [completedTasks]);
 
   return (
     <>
       <Navbar />
       <Container maxW="container.lg" centerContent p={6}>
         <VStack w="100%">
-          <Session task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} msPassed={msPassed} setMsPassed={setMsPassed} />
+          <Session
+            task={task}
+            dispatchTask={dispatchTask}
+            dispatchComplete={dispatchComplete}
+          />
           <Divider borderColor="gray.200" />
           {settingsCtx.isStatistics && (
           <>
