@@ -10,6 +10,25 @@ export default function Task({ colorScheme, task }: { colorScheme: string, task:
   const originalStart = new Date(task.originalStart);
   const end = task.end ? new Date(task.end) : new Date(0);
 
+  function intervalToOutput(t: TaskType) : string {
+    switch (t.type) {
+      case TaskModeEnum.WORKING:
+        return outputInterval(settingsCtx.pomodoroDuration);
+      case TaskModeEnum.SHORT_BREAK:
+        return t.length <= settingsCtx.shortBreakDuration
+          ? outputInterval(t.length)
+          : outputInterval(settingsCtx.shortBreakDuration);
+      case TaskModeEnum.LONG_BREAK:
+        return t.length <= settingsCtx.longBreakDuration
+          ? outputInterval(t.length)
+          : outputInterval(settingsCtx.longBreakDuration);
+      case TaskModeEnum.PAUSED:
+        return outputInterval(t.length);
+      default:
+        return '';
+    }
+  }
+
   return (
     <Box display="flex" alignItems="center" mb={2} justifyContent="space-between">
       <Badge
@@ -41,7 +60,7 @@ export default function Task({ colorScheme, task }: { colorScheme: string, task:
         colorScheme={colorScheme}
       >
         <Icon as={BsHourglassSplit} display="inline" mr={1} />
-        {outputInterval(task.length)}
+        {intervalToOutput(task)}
       </Badge>
     </Box>
   );
