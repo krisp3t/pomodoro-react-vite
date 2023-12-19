@@ -1,6 +1,6 @@
 // Library imports
 import {
-  useContext, useReducer, useRef, useState,
+  useContext, useReducer,
 } from 'react';
 import { Container, Divider, VStack } from '@chakra-ui/react';
 
@@ -25,12 +25,15 @@ import {
 } from './types/types';
 import { initialTask, initialTasks } from './default/defaultSession';
 
-function getNotification(type: 'break' | 'work') {
+function getNotificationOptions(type: 'break' | 'work') : { title: string, options: object } {
   const text = type === 'break' ? 'Work session completed! Good work, now take a break 😉🔥' : 'Break is over - back to grinding! 💪';
-  return new Notification('Pomodoro Timer', {
-    body: text,
-    icon: tomatoLogo,
-  });
+  return {
+    title: 'Pomodoro Timer',
+    options: {
+      body: text,
+      icon: tomatoLogo,
+    },
+  };
 }
 
 const alarm = new Audio(alarmSound);
@@ -129,14 +132,19 @@ export default function App() {
   const settingsCtx = useContext(SettingsContext);
   const [completedTasks, dispatchComplete] = useReducer(completeTasksReducer, initialTasks);
   const [task, dispatchTask] = useReducer(modeReducer, initialTask);
-  const [msPassed, setMsPassed] = useState(0);
 
   return (
     <>
       <Navbar />
       <Container maxW="container.lg" centerContent p={6}>
         <VStack w="100%">
-          <Session task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} msPassed={msPassed} setMsPassed={setMsPassed} />
+          <Session
+            task={task}
+            dispatchTask={dispatchTask}
+            dispatchComplete={dispatchComplete}
+            getNotificationOptions={getNotificationOptions}
+            startAlarm={startAlarm}
+          />
           <Divider borderColor="gray.200" />
           {settingsCtx.isStatistics && (
           <>

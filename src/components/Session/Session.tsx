@@ -1,6 +1,5 @@
 // External imports
 import {
-  useCallback,
   useContext, useEffect, useRef, useState,
 } from 'react';
 import { Box, Heading } from '@chakra-ui/react';
@@ -20,11 +19,13 @@ import {
 } from '../../types/types';
 
 export default function Session({
-  task, dispatchTask, dispatchComplete,
+  task, dispatchTask, dispatchComplete, getNotificationOptions, startAlarm,
 } : {
   task: Task,
-  dispatchTask: (arg0: TaskAction) => void;
-  dispatchComplete: (arg0: CompleteTaskAction) => void;
+  dispatchTask: (arg0: TaskAction) => void,
+  dispatchComplete: (arg0: CompleteTaskAction) => void,
+  getNotificationOptions: (arg0: 'break' | 'work') => { title: string, options: object }
+  startAlarm: (arg0: number) => void,
 }) {
   const [msPassed, setMsPassed] = useState(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -62,8 +63,23 @@ export default function Session({
         || (msPassed > settingsCtx.longBreakDuration && task.type === TaskModeEnum.LONG_BREAK)
         || (msPassed > settingsCtx.shortBreakDuration && task.type === TaskModeEnum.SHORT_BREAK)) {
       setMsPassed(0);
+      if (settingsCtx.isNotifications) {
+        const notif = getNotificationOptions(task.type === TaskModeEnum.WORKING ? 'break' : 'work');
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const notification = new Notification(notif.title, notif.options);
+      }
+      startAlarm(settingsCtx.audioVolume);
       dispatchTask({ type: TaskActionEnum.START, payload: msPassed });
-      dispatchComplete({ type: CompleteActionEnum.ADD, payload: { ...task, end: Date.now(), length: task.length + Date.now() - task.currentStart } });
+      dispatchComplete(
+        {
+          type: CompleteActionEnum.ADD,
+          payload: {
+            ...task,
+            end: Date.now(),
+            length: task.length + Date.now() - task.currentStart,
+          },
+        },
+      );
     }
   }, [dispatchTask, msPassed, settingsCtx, task.type]);
 
@@ -76,7 +92,13 @@ export default function Session({
           <p>{outputInterval(msPassed)}</p>
         </Heading>
       </Box>
-      <SessionButtons task={task} dispatchTask={dispatchTask} dispatchComplete={dispatchComplete} msPassed={msPassed} setMsPassed={setMsPassed} />
+      <SessionButtons
+        task={task}
+        dispatchTask={dispatchTask}
+        dispatchComplete={dispatchComplete}
+        msPassed={msPassed}
+        setMsPassed={setMsPassed}
+      />
     </Box>
   );
 }

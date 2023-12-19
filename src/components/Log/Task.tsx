@@ -3,17 +3,12 @@ import {
 } from '@chakra-ui/react';
 import { IoMdClock } from 'react-icons/io';
 import { BsHourglassSplit } from 'react-icons/bs';
-import { useContext } from 'react';
 import outputInterval, { formatHours, formatMinutes } from '../Session/Session.utils';
 import type { Task as TaskType } from '../../types/types';
 
-import { SettingsContext } from '../../store/SettingsContext';
-import { TaskModeEnum } from '../../types/types';
-
 export default function Task({ colorScheme, task }: { colorScheme: string, task: TaskType }) {
   const originalStart = new Date(task.originalStart);
-  const end = task.end ? new Date(task.end) : 0;
-  const settingsCtx = useContext(SettingsContext);
+  const end = task.end ? new Date(task.end) : new Date(0);
 
   return (
     <Box display="flex" alignItems="center" mb={2} justifyContent="space-between">
