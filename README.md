@@ -1,7 +1,6 @@
 # Pomodoro Timer
 
-## Pomodoro Timer made with React and Chakra UI
-Front-end is made with [Chakra UI](https://chakra-ui.com/) component library.
+Front-end is made with [Chakra UI](https://chakra-ui.com/) component library for React.
 
 ## Features
 
@@ -13,17 +12,13 @@ Front-end is made with [Chakra UI](https://chakra-ui.com/) component library.
 
 - ⏰ Alarm with customizable volume and notifications
 
- -🌒 Dark Mode to help night owls get stuff done
+- 🌒 Dark Mode to help night owls get stuff done
 
 ## Preview
 
 ![Pomodoro Timer preview](https://i.ibb.co/X8cryZt/Untitled.jpg)
 
 ## Installation
-
-### Web App
-
-Web App hosted on Netlify is accessible at: **https://sleepy-snyder-66d5f1.netlify.app/**
 
 ### npm scripts
 
